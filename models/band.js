@@ -1,8 +1,8 @@
-const {v4: uuid4} = require('uuid')
+const { v4: uuidv4 } = require('uuid');
 
 class Band {
   constructor(name){
-   this.id = uuid4;
+   this.id = uuidv4();
    this.name = name;
    this.votes = 0; 
   }
