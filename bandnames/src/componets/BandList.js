@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const BandList = () => {
-  const createRow = () => {
+export const BandList = ({band}) => {
+  const createRow = (band) => {
     return(
       <tr>
         <td>
@@ -9,7 +9,7 @@ export const BandList = () => {
         </td>
         <td>
           <input className="form-control"
-          
+            value={band.name}
           />
         </td>
         <td>
@@ -33,7 +33,7 @@ export const BandList = () => {
             </tr>
           </thead>
           <tbody>
-              {createRow()}
+              {createRow(band)}
           </tbody>
        </table>
     </>

@@ -13,19 +13,31 @@ const connectSocket = () => {
 function App() {
   const [socket] = useState(connectSocket());
   const [online, setOnline] = useState(false);
+  const [bands, setBands] = useState([]);
+
   useEffect(() => {
     setOnline(socket.connected);
   }, [socket]);
+
   useEffect(() => {
     socket.on('connect', () => {
       setOnline(true)
     });
   }, [socket]);
+
   useEffect(() => {
     socket.on('disconnect', () => {
       setOnline(false)
     });
   }, [socket]);
+  
+  useEffect(() => {
+    socket.on('current-bands', (data) => {
+      setBands(data);
+      console.log(data)
+    });
+  }, [socket]);
+
   return (
     <div className="container">
       <div className="alert">
@@ -43,7 +55,14 @@ function App() {
       <div className="row">
         <div className="col-8">
           BandList
-          <BandList />
+          {
+            bands.map( band => (
+              <BandList 
+                key={band.id}
+                band={band} 
+              />
+            ))
+          }
         </div>
         <div className="col-4">
           BandAdd
