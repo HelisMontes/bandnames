@@ -34,7 +34,6 @@ function App() {
   useEffect(() => {
     socket.on('current-bands', (data) => {
       setBands(data);
-      console.log(data)
     });
   }, [socket]);
 
@@ -55,14 +54,7 @@ function App() {
       <div className="row">
         <div className="col-8">
           BandList
-          {
-            bands.map( band => (
-              <BandList 
-                key={band.id}
-                band={band} 
-              />
-            ))
-          }
+          <BandList data={bands}/>
         </div>
         <div className="col-4">
           BandAdd

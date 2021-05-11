@@ -1,24 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-export const BandList = ({band}) => {
-  const createRow = (band) => {
+export const BandList = ({data}) => {
+  const [bands, setBands] = useState(data);
+  
+  useEffect(() => {
+    setBands(data)
+  }, [data])
+  
+  const changeNameBand = (event, id) => {
+    const newName = event.target.value
+    setBands(bands => bands.map( band => {
+      band.id === id && (band.name= newName);
+      return band
+    }));
+  }
+  const outFocus = (id, name) => {
+    console.log(id, name)
+    //Dispara el evento de socket
+  }
+  const createRow = () => {
     return(
-      <tr>
-        <td>
-          <button className="btn btn-primary">+1</button>
-        </td>
-        <td>
-          <input className="form-control"
-            value={band.name}
-          />
-        </td>
-        <td>
-          <h3>15</h3>
-        </td>
-        <td>
-          <button className="btn btn-danger">Borrar</button>
-        </td>
-      </tr>
+      bands.map( band => (
+        <tr key={band.id}>
+          <td>
+            <button className="btn btn-primary">+1</button>
+          </td>
+          <td>
+            <input className="form-control"
+              value={band.name}
+              onChange={(event)=>changeNameBand(event, band.id)}
+              onBlur={() => {outFocus(band.id, band.name)}}
+            />
+          </td>
+          <td>
+            <h3>{band.votes}</h3>
+          </td>
+          <td>
+            <button className="btn btn-danger">Borrar</button>
+          </td>
+        </tr>
+      ))
     )
   }
   return (
@@ -33,7 +54,7 @@ export const BandList = ({band}) => {
             </tr>
           </thead>
           <tbody>
-              {createRow(band)}
+              {createRow()}
           </tbody>
        </table>
     </>
