@@ -1,42 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import io  from 'socket.io-client';
 import { BandAdd } from './componets/BandAdd';
 import { BandList } from './componets/BandList';
-
-const connectSocket = () => {
-  const socket = io.connect('http://localhost:8080/',{
-    transports:['websocket'] 
-  });
-  return socket;
-}
+import { useSocket } from './hooks/useSocket';
 
 function App() {
-  const [socket] = useState(connectSocket());
-  const [online, setOnline] = useState(false);
   const [bands, setBands] = useState([]);
+  const {socket, online} = useSocket('http://localhost:8080/');
 
-  useEffect(() => {
-    setOnline(socket.connected);
-  }, [socket]);
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      setOnline(true)
-    });
-  }, [socket]);
-
-  useEffect(() => {
-    socket.on('disconnect', () => {
-      setOnline(false)
-    });
-  }, [socket]);
-  
   useEffect(() => {
     socket.on('current-bands', (data) => {
       setBands(data);
     });
   }, [socket]);
-  
+
   const votar = id => socket.emit('votar-banda',{id});
   const deleteBand = id => socket.emit('delete-banda',{id});
   const changeNameBand = (id, newName) => socket.emit('change-banda',{id, newName});
