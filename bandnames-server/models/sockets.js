@@ -32,6 +32,12 @@ class Sockets {
         // Emitir a todos los clientes conectado, el listado de las bandas
         this.io.emit('current-bands', this.bandList.getBand());
       });
+      //Agregar nueva banda
+      socket.on('add-banda', ({name}) =>{
+        this.bandList.addBand(name);
+        // Emitir a todos los clientes conectado, el listado de las bandas
+        this.io.emit('current-bands', this.bandList.getBand());
+      });      
 
     });
   }
