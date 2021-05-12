@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { SocketContext } from '../context/SocketContext'
 
-export const BandAdd = ({addBand:newBand}) => {
-  const [band, setBand] = useState('')
+export const BandAdd = () => {
+  const [band, setBand] = useState('');
+  const {socket} = useContext(SocketContext);
+  
   const addBand = (event) =>{
     event.preventDefault();
-    band.trim().length > 0 ? newBand(band) : alert('Campo Vacio');
+    band.trim().length > 0 
+      ? socket.emit('add-banda',{name:band})
+      : alert('Campo Vacio');
     setBand('');
   }
   return (
