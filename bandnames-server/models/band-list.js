@@ -27,11 +27,10 @@ class BandList{
     });
   }
   changeNameBand(id, nameNew){
-    this.bands = this.bands.map(band => (
-      (band.id === id)
-        ? band.name = nameNew
-        : band
-    ));
+    this.bands = this.bands.map(band => {
+      band.id === id && (band.name = nameNew);
+      return band
+    });
   }
 }
 
